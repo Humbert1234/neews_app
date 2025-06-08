@@ -41,8 +41,20 @@ class _NewsListScreenState extends State<NewsListScreen> {
       body: Consumer<NewsProvider>(
         builder: (context, newsProvider, child) {
           if (newsProvider.isLoading) {
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const CircularProgressIndicator(),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Loading latest news...',
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                  ),
+                ],
+              ),
             );
           }
 
@@ -51,35 +63,44 @@ class _NewsListScreenState extends State<NewsListScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: Colors.red,
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.red[50],
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.error_outline,
+                      size: 64,
+                      color: Colors.red,
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   Text(
                     'Error loading news',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: Colors.red[700],
+                        ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 32),
                     child: Text(
                       newsProvider.error!,
                       textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyMedium,
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Colors.grey[600],
+                          ),
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   ElevatedButton.icon(
                     onPressed: () => newsProvider.fetchNews(),
                     icon: const Icon(Icons.refresh),
-                    label: const Text('Retry'),
+                    label: const Text('Try Again'),
                     style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
+                      backgroundColor: Colors.red[700],
+                      foregroundColor: Colors.white,
                     ),
                   ),
                 ],
@@ -92,20 +113,41 @@ class _NewsListScreenState extends State<NewsListScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.newspaper,
-                    size: 64,
-                    color: Colors.grey,
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[100],
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      Icons.newspaper,
+                      size: 64,
+                      color: Colors.grey[400],
+                    ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                   Text(
                     'No news available',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                    style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+                          color: Colors.grey[700],
+                        ),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 12),
                   Text(
                     'Try refreshing the page',
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Colors.grey[600],
+                        ),
+                  ),
+                  const SizedBox(height: 24),
+                  ElevatedButton.icon(
+                    onPressed: () => newsProvider.fetchNews(),
+                    icon: const Icon(Icons.refresh),
+                    label: const Text('Refresh'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blue[700],
+                      foregroundColor: Colors.white,
+                    ),
                   ),
                 ],
               ),
@@ -115,7 +157,7 @@ class _NewsListScreenState extends State<NewsListScreen> {
           return RefreshIndicator(
             onRefresh: () => newsProvider.fetchNews(),
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               itemCount: newsProvider.articles.length,
               itemBuilder: (context, index) {
                 final article = newsProvider.articles[index];
