@@ -48,13 +48,17 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           widget.article.source,
           overflow: TextOverflow.ellipsis,
         ),
-        backgroundColor: Colors.blue,
-        foregroundColor: Colors.white,
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
             onPressed: () {
               controller.reload();
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () {
+              // TODO: Implement share functionality
             },
           ),
         ],
@@ -63,8 +67,24 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
         children: [
           WebViewWidget(controller: controller),
           if (isLoading)
-            const Center(
-              child: CircularProgressIndicator(),
+            Container(
+              color: Colors.white,
+              child: const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text(
+                      'Loading article...',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
         ],
       ),
